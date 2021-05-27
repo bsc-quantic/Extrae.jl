@@ -1,0 +1,7 @@
+name = "Extrae"
+uuid = "8a0c07fa-ade5-4b2a-b81a-b192b2bedf88"
+authors = ["Sergio Sánchez Ramírez <sergio.sanchez.ramirez@bsc.es> and contributors"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
