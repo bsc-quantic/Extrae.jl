@@ -54,6 +54,11 @@ export shutdown
 restart() = FFI.Extrae_restart()
 export restart
 
+instrumentation(state::Bool) = instrumentation(Val{state}())
+instrumentation(::Val{false}) = shutdown()
+instrumentation(::Val{true}) = restart()
+export instrumentation
+
 """
 Adds a single timestampted event into the tracefile.
 
