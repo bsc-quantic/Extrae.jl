@@ -23,10 +23,9 @@ export version
 Initializes the tracing library.
 
 This routine is called automatically in different circumstances, which include:
-
-	- Call to MPI_Init when the appropriate instrumentation library is linked or preload with the application.
-    - Usage of the DynInst launcher.
-    - If either the `libseqtrace.so`, `libomptrace.so` or `libpttrace.so` are linked dynamically or preloaded with the application.
+- Call to MPI_Init when the appropriate instrumentation library is linked or preload with the application.
+- Usage of the DynInst launcher.
+- If either the `libseqtrace.so`, `libomptrace.so` or `libpttrace.so` are linked dynamically or preloaded with the application.
 
 No major problems should occur if the library is initialized twice, only a warning appears in the terminal output noticing the intent of double initialization.
 """
@@ -95,14 +94,14 @@ event(type, value; counters::Bool=false) = event(type, value, Val{counters}())
 event(type, value, counters::Bool) = event(type, value, Val{counters}())
 event(type, value, ::Val{false}) = FFI.Extrae_event(type, value)
 event(type, value, ::Val{true}) = FFI.Extrae_eventandcounters(type, value)
-event(events::Vector{Tuple{Type, Value}}; counters::Bool=false) = event(events, Val{counters}())
-event(events::Vector{Tuple{Type, Value}}, counters::Bool=false) = event(events, Val{counters}())
-event(events::Vector{Tuple{Type, Value}}, ::Val{false}) = begin
+event(events::Vector{Tuple{Type,Value}}; counters::Bool=false) = event(events, Val{counters}())
+event(events::Vector{Tuple{Type,Value}}, counters::Bool=false) = event(events, Val{counters}())
+event(events::Vector{Tuple{Type,Value}}, ::Val{false}) = begin
 	types = map(x -> x[1], events)
 	values = map(x -> x[2], events)
 	FFI.Extrae_nevent(length(events), Ref(types), Ref(values))
 end
-event(events::Vector{Tuple{Type, Value}}, ::Val{true}) = begin
+event(events::Vector{Tuple{Type,Value}}, ::Val{true}) = begin
 	types = map(x -> x[1], events)
 	values = map(x -> x[2], events)
 	FFI.Extrae_neventandcounters(length(events), Ref(types), Ref(values))
@@ -115,7 +114,7 @@ This routine adds to the Paraver Configuration File human readable information r
 If no values need to be decribed set nvalues to `0` and also set values and description_values to `NULL`.
 """
 define_event(type::Type, desc::String) = FFI.Extrae_define_event_type(type, Base.cconvert(Cstring(desc)), 0, Nothing, Nothing)
-define_event(type::Type, desc::String, values::Vector{Tuple{Value, String}}) = begin
+define_event(type::Type, desc::String, values::Vector{Tuple{Value,String}}) = begin
 	nvalues = length(values)
 	_values = map(x -> x[1], values)
 	_descs = map(x -> x[2], values)
