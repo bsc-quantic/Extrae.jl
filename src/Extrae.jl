@@ -1,7 +1,8 @@
 module Extrae
 
 include("FFI.jl")
-using FFI: Type, Value
+const Type = FFI.Type
+const Value = FFI.Value
 
 """
 Returns the version of the underlying TRACE package.
