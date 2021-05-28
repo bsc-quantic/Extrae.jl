@@ -137,7 +137,7 @@ previous_hwc_set() = FFI.Extrae_previous_hwc_set()
 next_hwc_set() = FFI.Extrae_next_hwc_set()
 
 "Allows the user to choose from which tasks (not threads!) store information in the tracefile."
-set_tracing_tasks(...) = FFI.Extrae_set_tracing_tasks(...)
+set_tracing_tasks(interval::UnitRange{UInt32}) = FFI.Extrae_set_tracing_tasks(interval.start::UInt32, interval.stop::UInt32)
 
 """
 Permits configuring several tracing options at runtime. The options parameter has to be a bitwise or combination of the following options, depending on the user's needs:
