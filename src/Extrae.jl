@@ -100,12 +100,12 @@ event(events::Vector{Tuple{Type, Value}}, counters::Bool=false) = event(events, 
 event(events::Vector{Tuple{Type, Value}}, ::Val{false}) = begin
 	types = map(x -> x[1], events)
 	values = map(x -> x[2], events)
-	FFI.Extrae_nevent(length(events), Ref{types}, Ref{values})
+	FFI.Extrae_nevent(length(events), Ref(types), Ref(values))
 end
 event(events::Vector{Tuple{Type, Value}}, ::Val{true}) = begin
 	types = map(x -> x[1], events)
 	values = map(x -> x[2], events)
-	FFI.Extrae_neventandcounters(length(events), Ref{types}, Ref{values})
+	FFI.Extrae_neventandcounters(length(events), Ref(types), Ref(values))
 end
 export event
 
