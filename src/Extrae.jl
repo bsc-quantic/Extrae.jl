@@ -10,13 +10,13 @@ Returns the version of the underlying TRACE package.
 Although an application may be compiled to a specific TRACE library, by using the appropiate shared library commands, the application may use a different TRACE library.
 """
 function version()
-	major = Ref(UInt32(0))
-	minor = Ref(UInt32(0))
-	rev = Ref(UInt32(0))
+    major = Ref(UInt32(0))
+    minor = Ref(UInt32(0))
+    rev = Ref(UInt32(0))
 
-	FFI.Extrae_get_version(major, minor, rev)
+    FFI.Extrae_get_version(major, minor, rev)
 
-	VersionNumber(major[], minor[], rev[])
+    VersionNumber(major[], minor[], rev[])
 end
 export version
 
@@ -103,14 +103,14 @@ event(type, value, ::Val{true}) = FFI.Extrae_eventandcounters(type, value)
 event(events::Vector{Tuple{Type,Value}}; counters::Bool=false) = event(events, Val{counters}())
 event(events::Vector{Tuple{Type,Value}}, counters::Bool=false) = event(events, Val{counters}())
 event(events::Vector{Tuple{Type,Value}}, ::Val{false}) = begin
-	types = map(x -> x[1], events)
-	values = map(x -> x[2], events)
-	FFI.Extrae_nevent(length(events), Ref(types), Ref(values))
+    types = map(x -> x[1], events)
+    values = map(x -> x[2], events)
+    FFI.Extrae_nevent(length(events), Ref(types), Ref(values))
 end
 event(events::Vector{Tuple{Type,Value}}, ::Val{true}) = begin
-	types = map(x -> x[1], events)
-	values = map(x -> x[2], events)
-	FFI.Extrae_neventandcounters(length(events), Ref(types), Ref(values))
+    types = map(x -> x[1], events)
+    values = map(x -> x[2], events)
+    FFI.Extrae_neventandcounters(length(events), Ref(types), Ref(values))
 end
 export event
 
@@ -121,10 +121,10 @@ If no values need to be decribed set nvalues to `0` and also set values and desc
 """
 define_event(type::Type, desc::String) = FFI.Extrae_define_event_type(type, Base.cconvert(Cstring(desc)), 0, Nothing, Nothing)
 define_event(type::Type, desc::String, values::Vector{Tuple{Value,String}}) = begin
-	nvalues = length(values)
-	_values = map(x -> x[1], values)
-	_descs = map(x -> x[2], values)
-	FFI.Extrae_define_event_type(type, Base.cconvert(desc), nvalues, Ref(_values), Ref(_descs))
+    nvalues = length(values)
+    _values = map(x -> x[1], values)
+    _descs = map(x -> x[2], values)
+    FFI.Extrae_define_event_type(type, Base.cconvert(desc), nvalues, Ref(_values), Ref(_descs))
 end
 
 "Emits the value of the active hardware counters set."

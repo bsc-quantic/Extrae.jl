@@ -4,21 +4,21 @@ const lib = "libseqtrace"
 
 # extrae_types.h
 @enum InitType begin
-	NotInitialized = 0
-	Extrae
-	MPI
-	SharedMem
+    NotInitialized = 0
+    Extrae
+    MPI
+    SharedMem
 end
 
 @enum UserCommunicationTypes begin
-	Send = 0
-	Recv
+    Send = 0
+    Recv
 end
 
 @enum UserFunction begin
-	FunctionNone = -1
-	FunctionLeave = 0
-	FunctionEnter
+    FunctionNone = -1
+    FunctionLeave = 0
+    FunctionEnter
 end
 
 const CommTag = UInt32
@@ -28,21 +28,21 @@ const Type = UInt32
 const Value = UInt64
 
 struct UserCommunication
-	type::UserCommunicationTypes
-	tag::CommTag
-	size::UInt32
-	id::CommId
+    type::UserCommunicationTypes
+    tag::CommTag
+    size::UInt32
+    id::CommId
 end
 
 struct CombinedEvents
-	hwCounters::Int32
-	callers::Int32
-	userFunction::Int32
-	nEvents::UInt32
-	types::Ptr{Type}
-	values::Ptr{Value}
-	nCommunications::UInt32
-	communications::Ptr{UserCommunication}
+    hwCounters::Int32
+    callers::Int32
+    userFunction::Int32
+    nEvents::UInt32
+    types::Ptr{Type}
+    values::Ptr{Value}
+    nCommunications::UInt32
+    communications::Ptr{UserCommunication}
 end
 
 # extrae.h
@@ -138,18 +138,18 @@ MPItrace_set_tracing_tasks(from, to) = @ccall lib.MPItrace_set_tracing_tasks(fro
 OMPItrace_set_tracing_tasks(from, to) = @ccall lib.OMPItrace_set_tracing_tasks(from::UInt32, to::UInt32)::Cvoid
 
 @enum Options begin
-	Disable = 0
-	Caller = 1 << 0
-	HWC = 1 << 1
-	MPI_HWC = 1 << 2
-	_MPI = 1 << 3
-	OMP = 1 << 4
-	OMP_HWC = 1 << 5
-	UF_HWC = 1 << 6
-	PThread = 1 << 7
-	PThread_HWC = 1 << 8
-	Sampling = 1 << 9
-	All = 1 << 10 - 1
+    Disable = 0
+    Caller = 1 << 0
+    HWC = 1 << 1
+    MPI_HWC = 1 << 2
+    _MPI = 1 << 3
+    OMP = 1 << 4
+    OMP_HWC = 1 << 5
+    UF_HWC = 1 << 6
+    PThread = 1 << 7
+    PThread_HWC = 1 << 8
+    Sampling = 1 << 9
+    All = 1 << 10 - 1
 end
 
 Extrae_set_options(options::Options) = @ccall lib.Extrae_set_options(options::Int32)::Cvoid
