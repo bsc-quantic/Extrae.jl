@@ -10,13 +10,13 @@ Returns the version of the underlying TRACE package.
 Although an application may be compiled to a specific TRACE library, by using the appropiate shared library commands, the application may use a different TRACE library.
 """
 function version()
-	major = UInt32(0)
-	minor = UInt32(0)
-	rev = UInt32(0)
+	major = Ref(UInt32(0))
+	minor = Ref(UInt32(0))
+	rev = Ref(UInt32(0))
 
-	FFI.Extrae_get_version(Ref(major), Ref(minor), Ref(rev))
+	FFI.Extrae_get_version(major, minor, rev)
 
-	VersionNumber(major, minor, rev)
+	VersionNumber(major[], minor[], rev[])
 end
 export version
 
