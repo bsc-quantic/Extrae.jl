@@ -46,14 +46,6 @@ export finish
 flush() = FFI.Extrae_flush()
 export flush
 
-"Turns off the instrumentation."
-shutdown() = FFI.Extrae_shutdown()
-export shutdown
-
-"Turns on the instrumentation."
-restart() = FFI.Extrae_restart()
-export restart
-
 instrumentation(state::Bool) = state ? restart() : shutdown()
 export instrumentation
 
