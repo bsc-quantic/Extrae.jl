@@ -54,9 +54,7 @@ export shutdown
 restart() = FFI.Extrae_restart()
 export restart
 
-instrumentation(state::Bool) = instrumentation(Val{state}())
-instrumentation(::Val{false}) = shutdown()
-instrumentation(::Val{true}) = restart()
+instrumentation(state::Bool) = state ? restart() : shutdown()
 export instrumentation
 
 """
@@ -96,21 +94,11 @@ Some common uses of events are:
 
 - Identify any point in the application using a unique combination of type and value.
 """
-event(type, value; counters::Bool=false) = event(type, value, Val{counters}())
-event(type, value, counters::Bool) = event(type, value, Val{counters}())
-event(type, value, ::Val{false}) = FFI.Extrae_event(type, value)
-event(type, value, ::Val{true}) = FFI.Extrae_eventandcounters(type, value)
-event(events::Vector{Tuple{Type,Value}}; counters::Bool=false) = event(events, Val{counters}())
-event(events::Vector{Tuple{Type,Value}}, counters::Bool=false) = event(events, Val{counters}())
-event(events::Vector{Tuple{Type,Value}}, ::Val{false}) = begin
+event(type, value; counters::Bool=false) = (counters ? FFI.Extrae_eventandcounters : FFI.Extrae_event)(type, value)
+event(events::Vector{Tuple{Type,Value}}; counters::Bool=false) = begin
     types = map(x -> x[1], events)
     values = map(x -> x[2], events)
-    FFI.Extrae_nevent(length(events), Ref(types), Ref(values))
-end
-event(events::Vector{Tuple{Type,Value}}, ::Val{true}) = begin
-    types = map(x -> x[1], events)
-    values = map(x -> x[2], events)
-    FFI.Extrae_neventandcounters(length(events), Ref(types), Ref(values))
+    (counters ? FFI.Extrae_neventandcounters : FFI.Extrae_nevent)(length(events), Ref(types), Ref(values))
 end
 export event
 
