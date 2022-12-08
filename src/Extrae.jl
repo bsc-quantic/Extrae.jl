@@ -39,12 +39,12 @@ export init
 
 
 """
-    isinitialized()
+    isinit()
 
 Return `true` if the instrumentation has been initialized and if so, which mechanism was the first to initialize it.
 """
-isinitialized() = FFI.Extrae_is_initialized()
-export isinitialized
+isinit() = FFI.Extrae_is_initialized()
+export isinit
 
 """
     finish()
