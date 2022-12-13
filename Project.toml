@@ -3,5 +3,10 @@ uuid = "8a0c07fa-ade5-4b2a-b81a-b192b2bedf88"
 authors = ["Sergio Sánchez Ramírez <sergio.sanchez.ramirez@bsc.es> and contributors"]
 version = "0.1.0"
 
+[deps]
+Cassette = "7057c7e9-c182-5462-911a-8362d720325c"
+Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
+Requires = "ae029012-a4dd-5104-9daa-d747884805df"
+
 [compat]
 julia = "1"
