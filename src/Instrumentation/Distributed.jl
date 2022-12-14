@@ -14,11 +14,11 @@ Cassette.prehook(::ExtraeCtx, ::typeof(start_worker), args...) = println("[TRACE
 Cassette.posthook(::ExtraeCtx, _, ::typeof(start_worker), args...) = println("[TRACE] start_worker - end @ $(myid())")
 
 # task creation
-Cassette.prehook(::ExtraeCtx, ::typeof(remotecall), args...) = println("[TRACE] remotecall - begin @ $(myid())")
-Cassette.posthook(::ExtraeCtx, _, ::typeof(remotecall), args...) = println("[TRACE] remotecall - end @ $(myid())")
+Cassette.prehook(::ExtraeCtx, ::typeof(remotecall), f, ::Distributed.Worker, args...) = println("[TRACE] remotecall[$f] - begin @ $(myid())")
+Cassette.posthook(::ExtraeCtx, _, ::typeof(remotecall), f, ::Distributed.Worker, args...) = println("[TRACE] remotecall[$f] - end @ $(myid())")
 
-Cassette.prehook(::ExtraeCtx, ::typeof(remotecall_fetch), args...) = println("[TRACE] remotecall_fetch - begin @ $(myid())")
-Cassette.posthook(::ExtraeCtx, _, ::typeof(remotecall_fetch), args...) = println("[TRACE] remotecall_fetch - end @ $(myid())")
+Cassette.prehook(::ExtraeCtx, ::typeof(remotecall_fetch), ::typeof(Distributed.fetch_ref), ::Distributed.Worker, args...) = println("[TRACE] remotecall_fetch - begin @ $(myid())")
+Cassette.posthook(::ExtraeCtx, _, ::typeof(remotecall_fetch), ::typeof(Distributed.fetch_ref), ::Distributed.Worker, args...) = println("[TRACE] remotecall_fetch - end @ $(myid())")
 
 Cassette.prehook(::ExtraeCtx, ::typeof(remotecall_wait), args...) = println("[TRACE] remotecall_wait - begin @ $(myid())")
 Cassette.posthook(::ExtraeCtx, _, ::typeof(remotecall_wait), args...) = println("[TRACE] remotecall_wait - end @ $(myid())")
