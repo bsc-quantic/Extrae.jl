@@ -196,6 +196,15 @@ Extrae_get_version(major::Ref{UInt32}, minor::Ref{UInt32}, revision::Ref{UInt32}
 Extrae_register_codelocation_type(t1::Type, t2::Type, s1::Cstring, s2::Cstring) = @ccall lib.Extrae_register_codelocation_type(t1::Type, t2::Type, s1::Cstring, s2::Cstring)::Cvoid
 Extrae_register_function_address(ptr::Ref{Cvoid}, funcname::Cstring, modname::Cstring, line::UInt32) = @ccall lib.Extrae_register_function_address(ptr::Ref{Cvoid}, funcname::Cstring, modname::Cstring, line::UInt32)::Cvoid
 
-# TODO extrae_internals.h
+# extrae_internals.h
+Extrae_set_threadid_function(f::Function) = @ccall lib.Extrae_set_threadid_function(@cfunction(f, Cuint, (Cvoid)))
+Extrae_set_numthreads_function(f::Function) = @ccall lib.Extrae_set_numthreads_function(@cfunction(f, Cuint, (Cvoid)))
+
+Extrae_set_taskid_function(f::Function) = @ccall lib.Extrae_set_taskid_function(@cfunction(f, Cuint, (Cvoid)))
+Extrae_set_numtasks_function(f::Function) = @ccall lib.Extrae_set_numtasks_function(@cfunction(f, Cuint, (Cvoid)))
+Extrae_set_barrier_tasks_function(f::Function) = @ccall lib.Extrae_set_barrier_tasks_function(@cfunction(f, Cuint, (Cvoid)))
+
+Extrae_set_thread_name(thread::Unsigned, name::String) = @ccall lib.Extrae_set_thread_name(thread::Cuint, name::Cstring)
+Extrae_function_from_address(type::Type, address) = @ccall lib.Extrae_function_from_address(type, address) # TODO
 
 end
