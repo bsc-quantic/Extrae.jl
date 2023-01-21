@@ -139,7 +139,7 @@ OMPtrace_set_tracing_tasks(from, to) = @ccall lib.OMPtrace_set_tracing_tasks(fro
 MPItrace_set_tracing_tasks(from, to) = @ccall lib.MPItrace_set_tracing_tasks(from::UInt32, to::UInt32)::Cvoid
 OMPItrace_set_tracing_tasks(from, to) = @ccall lib.OMPItrace_set_tracing_tasks(from::UInt32, to::UInt32)::Cvoid
 
-@enum Options begin
+@enum Options::Int32 begin
     Disable = 0
     Caller = 1 << 0
     HWC = 1 << 1
