@@ -1,6 +1,8 @@
 module FFI
 
-const lib = "libseqtrace"
+using Libdl: find_library
+
+const lib = find_library("libseqtrace")
 
 # extrae_types.h
 @enum InitType begin
