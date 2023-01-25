@@ -7,7 +7,6 @@ version = "0.0.1"
 Cassette = "7057c7e9-c182-5462-911a-8362d720325c"
 Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 Extrae_jll = "2b2c4be0-e38c-5918-b8b4-9a308845a1e9"
-Libdl = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 Requires = "ae029012-a4dd-5104-9daa-d747884805df"
 
 [compat]
