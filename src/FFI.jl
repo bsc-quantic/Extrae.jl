@@ -205,7 +205,7 @@ Extrae_set_taskid_function(f::Function) = @ccall lib.Extrae_set_taskid_function(
 Extrae_set_numtasks_function(f::Function) = @ccall lib.Extrae_set_numtasks_function(@cfunction(f, Cuint, (Cvoid)))
 Extrae_set_barrier_tasks_function(f::Function) = @ccall lib.Extrae_set_barrier_tasks_function(@cfunction(f, Cuint, (Cvoid)))
 
-Extrae_set_thread_name(thread::Unsigned, name::String) = @ccall lib.Extrae_set_thread_name(thread::Cuint, name::Cstring)
-Extrae_function_from_address(type::Type, address) = @ccall lib.Extrae_function_from_address(type, address) # TODO
+Extrae_set_thread_name(thread::Unsigned, name::String) = @ccall lib.Extrae_set_thread_name(thread::Cuint, name::Cstring)::Cvoid
+Extrae_function_from_address(type::Type, address) = @ccall lib.Extrae_function_from_address(type::Cuint, address::Ref{Cvoid})::Cvoid
 
 end
