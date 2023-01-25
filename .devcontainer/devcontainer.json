@@ -13,7 +13,10 @@
 			]
 		}
 	},
-	"postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}"
+	"postStartCommand": [
+		"git config --global --add safe.directory ${containerWorkspaceFolder}",
+		"julia --project=${containerWorkspaceFolder} -e \"using Pkg; Pkg.instantiate()\""
+	]
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Configure tool-specific properties.
