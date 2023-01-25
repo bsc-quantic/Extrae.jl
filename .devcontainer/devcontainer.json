@@ -3,7 +3,8 @@
 	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
 	"features": {
 		"ghcr.io/devcontainers/features/common-utils:2": {},
-		"ghcr.io/julialang/devcontainer-features/julia:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {},
+		"ghcr.io/julialang/devcontainer-features/julia:1": {}
 	},
 	"customizations": {
 		"vscode": {
@@ -11,7 +12,8 @@
 				"bungcip.better-toml"
 			]
 		}
-	}
+	},
+	"postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}"
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
