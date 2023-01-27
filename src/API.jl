@@ -28,7 +28,21 @@ This routine is called automatically in different circumstances, which include:
 
 No major problems should occur if the library is initialized twice, only a warning appears in the terminal output noticing the intent of double initialization.
 """
-init() = FFI.Extrae_init()
+function init()
+
+  ## TODO: This setup should depend on isntrumentation options.
+  ## For example, if isntrumenting Distributed, here we setup the
+  ## Distributed functions to identify resources
+  FFI.Extrae_set_numtasks_function(dist_numtasks)
+  FFI.Extrae_set_taskid_function(dist_taskid)
+
+  ## Setup traceid for not intereference
+  name = "JULIATRACE" * string(Distributed.myid())
+  var = "EXTRAE_PROGRAM_NAME"
+  @ccall setenv(var::Cstring, name::Cstring)::Cint
+
+  FFI.Extrae_init()
+end
 export init
 
 

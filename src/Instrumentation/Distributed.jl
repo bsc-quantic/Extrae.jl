@@ -29,3 +29,16 @@ Cassette.posthook(::ExtraeCtx, _, ::typeof(process_messages), args...) = println
 
 Cassette.prehook(::ExtraeCtx, ::typeof(interrupt), args...) = println("[TRACE] interrupt - begin @ $(myid())")
 Cassette.posthook(::ExtraeCtx, _, ::typeof(interrupt), args...) = println("[TRACE] interrupt - end @ $(myid())")
+
+# resource identification
+function dist_taskid()::Cuint
+    id = Distributed.myid() - 1
+    return id
+end
+export dist_taskid
+
+function dist_numtasks()::Cuint
+    nworkers = Distributed.nworkers()
+    return nworkers
+end
+export dist_numtasks
