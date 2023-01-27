@@ -109,6 +109,10 @@ event(events::Vector{Tuple{Type,Value}}; counters::Bool=false) = begin
 end
 export event
 
+abstract type Event{TypeCode,ValueCode} end
+
+emit(::Event{T,V}; counters::Bool=false) where {T,V} = event(T, V; counters=counters)
+
 """
 This routine adds to the Paraver Configuration File human readable information regarding type type and its values values.
 
