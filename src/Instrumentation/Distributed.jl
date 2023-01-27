@@ -13,6 +13,17 @@ const DistributedRemoteCallWait = DistributedEvent{7}()
 const DistributedProcessMessages = DistributedEvent{8}()
 const DistributedInterrupt = DistributedEvent{9}()
 
+description(::typeof(DistributedEnd)) = "end"
+description(::typeof(DistributedAddProcs)) = "addprocs"
+description(::typeof(DistributedRmProcs)) = "rmprocs"
+description(::typeof(DistributedInitWorker)) = "init_worker"
+description(::typeof(DistributedStartWorker)) = "start_worker"
+description(::typeof(DistributedRemoteCall)) = "remotecall"
+description(::typeof(DistributedRemoteCallFetch)) = "remotecall_fetch"
+description(::typeof(DistributedRemoteCallWait)) = "remotecall_wait"
+description(::typeof(DistributedProcessMessages)) = "process_messages"
+description(::typeof(DistributedInterrupt)) = "interrupt"
+
 # worker management
 Cassette.prehook(::ExtraeCtx, ::typeof(addprocs), args...) = emit(DistributedAddProcs)
 Cassette.posthook(::ExtraeCtx, _, ::typeof(addprocs), args...) = emit(DistributedEnd)
