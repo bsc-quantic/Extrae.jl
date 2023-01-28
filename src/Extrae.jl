@@ -14,4 +14,6 @@ function __init__()
     @require Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b" include("Instrumentation/Distributed.jl")
 end
 
+include("Instrumentation/Threads.jl")
+
 end
