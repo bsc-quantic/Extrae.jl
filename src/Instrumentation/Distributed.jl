@@ -38,7 +38,7 @@ end
 export dist_taskid
 
 function dist_numtasks()::Cuint
-    nworkers = Distributed.nworkers()
+    nworkers = Distributed.nworkers() + 1
     return nworkers
 end
 export dist_numtasks

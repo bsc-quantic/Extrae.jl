@@ -42,6 +42,7 @@ function init()
   @ccall setenv(var::Cstring, name::Cstring)::Cint
 
   FFI.Extrae_init()
+  Libc.flush_cstdio()
 end
 export init
 
@@ -59,7 +60,10 @@ export isinit
 
 Finalize the tracing library and dumps the intermediate tracing buffers onto disk.
 """
-finish() = FFI.Extrae_fini()
+function finish()
+  FFI.Extrae_fini()
+  Libc.flush_cstdio()
+end
 export finish
 
 """
