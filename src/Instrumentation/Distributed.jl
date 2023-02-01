@@ -1,5 +1,7 @@
 using Distributed
 
+include("ExtraeLocalManager.jl")
+
 # worker management
 Cassette.prehook(::ExtraeCtx, ::typeof(addprocs), args...) = println("[TRACE] addprocs - begin @ $(myid())")
 Cassette.posthook(::ExtraeCtx, _, ::typeof(addprocs), args...) = println("[TRACE] addprocs - end @ $(myid())")
@@ -42,3 +44,11 @@ function dist_numtasks()::Cuint
     return nworkers
 end
 export dist_numtasks
+
+# cluster manager addprocs 
+function addprocs_extrae(np::Integer; restrict=true, kwargs...)
+    manager = Extrae.ExtraeLocalManager(np, restrict)
+    #check_addprocs_args(manager, kwargs)
+    addprocs(manager; kwargs...)
+end
+export addprocs_extrae
