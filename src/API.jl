@@ -14,7 +14,6 @@ function version()
 
     VersionNumber(major[], minor[], rev[])
 end
-export version
 
 """
     init()
@@ -53,7 +52,6 @@ export init
 Return `true` if the instrumentation has been initialized and if so, which mechanism was the first to initialize it.
 """
 isinit() = FFI.Extrae_is_initialized()
-export isinit
 
 """
     finish()
@@ -72,7 +70,6 @@ export finish
 Force the calling thread to write the events stored in the tracing buffers to disk.
 """
 flush() = FFI.Extrae_flush()
-export flush
 
 """
     instrumentation(state)
@@ -80,72 +77,48 @@ export flush
 Turn on/off the instrumentation.
 """
 instrumentation(state::Bool) = state ? restart() : shutdown()
-export instrumentation
 
 """
-Add a single timestampted event into the tracefile.
-
-Some common uses of events are:
-- Identify loop iterations (or any code block): Given a loop, the user can set a unique type for the loop and a value related to the iterator value of the loop. For example:
-
-  ```c
-    for (i = 1; i <= MAX_ITERS; i++)
-    {
-      Extrae_event (1000, i);
-      [original loop code]
-      Extrae_event (1000, 0);
-    }
-  ````
-
-    The last added call to Extrae_event marks the end of the loop setting the event value to 0, which facilitates the analysis with Paraver.
-
-- Identify user routines: Choosing a constant type (6000019 in this example) and different values for different routines (set to 0 to mark a "leave" event).
-
-  ```c
-    void routine1 (void)
-    {
-      Extrae_event (6000019, 1);
-      [routine 1 code]
-      Extrae_event (6000019, 0);
-    }
-
-    void routine2 (void)
-    {
-      Extrae_event (6000019, 2);
-      [routine 2 code]
-      Extrae_event (6000019, 0);
-    }
-  ```
-
-- Identify any point in the application using a unique combination of type and value.
-"""
-event(type, value; counters::Bool=false) = (counters ? FFI.Extrae_eventandcounters : FFI.Extrae_event)(type, value)
-event(events::Vector{Tuple{Type,Value}}; counters::Bool=false) = begin
-    types = map(x -> x[1], events)
-    values = map(x -> x[2], events)
-    (counters ? FFI.Extrae_neventandcounters : FFI.Extrae_nevent)(length(events), Ref(types), Ref(values))
-end
-export event
-
-"""
-This routine adds to the Paraver Configuration File human readable information regarding type type and its values values.
-
-If no values need to be decribed set nvalues to `0` and also set values and description_values to `NULL`.
-"""
-define_event(type::Type, desc::String) = FFI.Extrae_define_event_type(type, Base.cconvert(Cstring(desc)), 0, Nothing, Nothing)
-define_event(type::Type, desc::String, values::Vector{Tuple{Value,String}}) = begin
-    nvalues = length(values)
-    _values = map(x -> x[1], values)
-    _descs = map(x -> x[2], values)
-    FFI.Extrae_define_event_type(type, Base.cconvert(desc), nvalues, Ref(_values), Ref(_descs))
-end
-
-"""
-    counters()
+    emit()
 
 Emit the value of the active hardware counters set.
 """
-counters() = FFI.Extrae_counters()
+emit() = FFI.Extrae_counters()
+
+abstract type Event{TypeCode,ValueCode} end
+typecode(::Event{T}) where {T} = T
+valuecode(::Event{T,V}) where {T,V} = V
+description(::Type{Event{T,V}}) where {T,V} = String(V)
+description(::E) where {E<:Event} = description(E)
+
+"""
+    emit(event)
+
+Add a single timestampted event into the tracefile.
+"""
+function emit(::Event{T,V}; counters::Bool=false) where {T,V}
+    if counters
+        FFI.Extrae_eventandcounters(FFI.Type(T), FFI.Value(V))
+    else
+        FFI.Extrae_event(FFI.Type(T), FFI.Value(V))
+    end
+end
+
+emit(events::Vector{Event}; counters::Bool=false) = foreach(e -> event(e; counters=counters), events)
+
+"""
+    register(event, description)
+    register(events, description)
+
+Document to the Paraver Configuration File human readable information regarding type type and its values values.
+"""
+register(::Type{<:Event{T}}, desc::String) where {T} = FFI.Extrae_define_event_type(T, Base.cconvert(Cstring(desc)), 0, Nothing, Nothing)
+function register(events::Vector{<:Event{T,V} where {V}}, desc::String) where {T}
+    nvalues = length(events)
+    values = valuecode.(events)
+    descs = description.(events)
+    FFI.Extrae_define_event_type(T, Base.cconvert(desc), nvalues, Ref(values), Ref(descs))
+end
 
 """
     previous_hwc_set()
@@ -202,23 +175,21 @@ network_routes(task) = FFI.Extrae_network_routes(task)
 Emit an event into the tracefile which references the source code (data includes: source line number, file name and function name).
 
 If enter is 0 it marks an end (i.e., leaving the function), otherwise it marks the beginning of the routine. The user must be careful to place the call of this routine in places where the code is always executed, being careful not to place them inside if and return statements. The function returns the address of the reference.
-```c
-void routine1 (void)
-{
-  Extrae_user_function (1);
-  [routine 1 code]
-  Extrae_user_function (0);
-}
+```julia
+function routine1()
+    user_function(1);
+    [routine1 code]
+    user_function(0);
+end
 
-void routine2 (void)
-{
-  Extrae_user_function (1);
-  [routine 2 code]
-  Extrae_user_function (0);
-}
+function routine2()
+    user_function(1);
+    [routine2 code]
+    user_function(0);
+end
 ```
 
-In order to gather performance counters during the execution of these calls, the user-functions tag and its counters have to be both enabled int section :ref:`sec:XMLSectionUF`.
+In order to gather performance counters during the execution of these calls, the user-functions tag and its counters have to be both enabled int section.
 
 # Warning
 
