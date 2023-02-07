@@ -48,8 +48,4 @@ function Distributed.manage(manager::ExtraeLocalManager, id::Integer, config::Wo
     end
 end
 
-export launch
-
-export manage
-
 export ExtraeLocalManager
