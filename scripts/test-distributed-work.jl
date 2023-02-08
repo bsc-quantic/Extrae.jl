@@ -15,9 +15,9 @@ end
 
 function test_distributed_work()
     @everywhere Extrae.init()
-    Cassette.overdub(Extrae.ExtraeCtx(), remote_do, Cassette.overdub, 2, Extrae.ExtraeCtx(), random_sleep)
-    # Cassette.overdub(Extrae.ExtraeCtx(), remote_do, Cassette.overdub, 3, Extrae.ExtraeCtx(), random_sleep)
-    # Cassette.overdub(Extrae.ExtraeCtx(), remote_do, Cassette.overdub, 4, Extrae.ExtraeCtx(), random_sleep)
+    Cassette.overdub(Extrae.ExtraeCtx(), remote_do, 2, random_sleep)
+    #Cassette.overdub(Extrae.ExtraeCtx(), remote_do, 3, random_sleep)
+    # Cassette.overdub(Extrae.ExtraeCtx(), remote_do, 4, random_sleep)
     sleep(10)
     @everywhere Extrae.finish()
 end
