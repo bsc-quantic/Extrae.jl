@@ -25,7 +25,7 @@ function Distributed.launch(manager::ExtraeLocalManager, params::Dict, launched:
 
     # Bug: Instead of using julia_cmd(exename), I directly use exename because idk howto access Base.julia_cmd
     for i in 1:manager.np
-        cmd = `env EXTRAE_SKIP_AUTO_LIBRARY_INITIALIZE=1 $exename $exeflags --project=. --bind-to $bind_to -e $hookline`
+        cmd = `env EXTRAE_SKIP_AUTO_LIBRARY_INITIALIZE=1 $exename $exeflags --project=. --bind-to $bind_to -e "$hookline"`
         io = open(detach(setenv(cmd, dir=dir)), "r+")
         
         # Cluster cookie is not passed through IO. Instead, we set it 

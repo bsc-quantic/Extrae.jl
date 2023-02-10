@@ -13,15 +13,21 @@ function random_sleep()
     println("Worker woke up: ", myid())
 end
 
+@everywhere function matrix_multiply(A)
+    println("multiplying")
+    return A^2
+end
+
 function test_distributed_work()
-    @everywhere Extrae.init()
-    Cassette.overdub(Extrae.ExtraeCtx(), remote_do, 2, random_sleep)
-    #Cassette.overdub(Extrae.ExtraeCtx(), remote_do, 3, random_sleep)
-    # Cassette.overdub(Extrae.ExtraeCtx(), remote_do, 4, random_sleep)
-    sleep(10)
+
+    A = rand(1000, 1000)
+    a1 =  @spawnat :any matrix_multiply(A)
+    a2 = @spawnat :any matrix_multiply(A)
+    fetch(a1)
+    fetch(a2)
     @everywhere Extrae.finish()
 end
 
-test_distributed_work()
+Cassette.overdub(Extrae.ExtraeCtx(), test_distributed_work)
 
 println("END TEST")

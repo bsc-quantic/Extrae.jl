@@ -4,6 +4,8 @@ using Distributed
 include("ExtraeLocalManager.jl")
 
 struct DistributedEvent{ValueCode} <: Event{400002,ValueCode} end
+struct DistributedUsefulWorkEvent{ValueCode} <: Event{400001,ValueCode} end
+struct DistributedMessageHandlingEvent{ValueCode} <: Event{400004,ValueCode} end
 
 const DistributedEnd = DistributedEvent{0}()
 const DistributedAddProcs = DistributedEvent{1}()
@@ -16,6 +18,20 @@ const DistributedRemoteCallWait = DistributedEvent{7}()
 const DistributedProcessMessages = DistributedEvent{8}()
 const DistributedInterrupt = DistributedEvent{9}()
 
+const DistributedUsefulWork = DistributedUsefulWorkEvent{1}()
+const DistributedNotUsefulWork = DistributedUsefulWorkEvent{0}()
+
+const DistributedHandleEnd = DistributedMessageHandlingEvent{0}()
+const DistributedHandleCall = DistributedMessageHandlingEvent{1}()
+const DistributedHandleCallFetch = DistributedMessageHandlingEvent{2}()
+const DistributedHandleCallWait = DistributedMessageHandlingEvent{3}()
+const DistributedHandleRemoteDo = DistributedMessageHandlingEvent{4}()
+const DistributedHandleResult = DistributedMessageHandlingEvent{5}()
+const DistributedHandleIdentifySocket = DistributedMessageHandlingEvent{6}()
+const DistributedHandleIdentifySocketAck = DistributedMessageHandlingEvent{7}()
+const DistributedHandleJoinPGRP = DistributedMessageHandlingEvent{8}()
+const DistributedHandleJoinComplete = DistributedMessageHandlingEvent{9}()
+
 description(::typeof(DistributedEnd)) = "end"
 description(::typeof(DistributedAddProcs)) = "addprocs"
 description(::typeof(DistributedRmProcs)) = "rmprocs"
@@ -26,6 +42,13 @@ description(::typeof(DistributedRemoteCallFetch)) = "remotecall_fetch"
 description(::typeof(DistributedRemoteCallWait)) = "remotecall_wait"
 description(::typeof(DistributedProcessMessages)) = "process_messages"
 description(::typeof(DistributedInterrupt)) = "interrupt"
+
+description(::typeof(DistributedUsefulWork)) = "Useful"
+description(::typeof(DistributedNotUsefulWork)) = "Not Useful"
+
+##### WORKAROUND TO NOT ESCAPE ON TASKS. See: https://github.com/JuliaLabs/Cassette.jl/issues/120
+Cassette.overdub(ctx::ExtraeCtx, ::typeof(Base.Core._Task), @nospecialize(f), stack::Int, future) = Base.Core._Task(()->Cassette.overdub(ctx, f), stack, future)
+
 
 # worker management
 Cassette.prehook(::ExtraeCtx, ::typeof(addprocs), args...) = emit(DistributedAddProcs)
@@ -57,6 +80,24 @@ Cassette.posthook(::ExtraeCtx, _, ::typeof(process_messages), args...) = emit(Di
 Cassette.prehook(::ExtraeCtx, ::typeof(interrupt), args...) = emit(DistributedInterrupt)
 Cassette.posthook(::ExtraeCtx, _, ::typeof(interrupt), args...) = emit(DistributedEnd)
 
+# workload execution
+Cassette.prehook(::ExtraeCtx, ::typeof(Distributed.run_work_thunk), f::Function, args...) = emit(DistributedUsefulWork)
+Cassette.posthook(::ExtraeCtx, _, ::typeof(Distributed.run_work_thunk), f::Function, args...) = emit(DistributedNotUsefulWork)
+
+# message handle
+Cassette.prehook(::ExtraeCtx, ::typeof(Distributed.handle_msg), ::Distributed.CallMsg{:call}, args...) = emit(DistributedHandleCall)
+Cassette.prehook(::ExtraeCtx, ::typeof(Distributed.handle_msg), ::Distributed.CallMsg{:call_fetch}, args...) = emit(DistributedHandleCallFetch)
+Cassette.prehook(::ExtraeCtx, ::typeof(Distributed.handle_msg), ::Distributed.CallWaitMsg, args...) = emit(DistributedHandleCallWait)
+Cassette.prehook(::ExtraeCtx, ::typeof(Distributed.handle_msg), ::Distributed.RemoteDoMsg, args...) = emit(DistributedHandleRemoteDo)
+Cassette.prehook(::ExtraeCtx, ::typeof(Distributed.handle_msg), ::Distributed.ResultMsg, args...) = emit(DistributedHandleResult)
+Cassette.prehook(::ExtraeCtx, ::typeof(Distributed.handle_msg), ::Distributed.IdentifySocketMsg, args...) = emit(DistributedHandleIdentifySocket)
+Cassette.prehook(::ExtraeCtx, ::typeof(Distributed.handle_msg), ::Distributed.IdentifySocketAckMsg, args...) = emit(DistributedHandleIdentifySocketAck)
+Cassette.prehook(::ExtraeCtx, ::typeof(Distributed.handle_msg), ::Distributed.JoinPGRPMsg, args...) = emit(DistributedHandleJoinPGRP)
+Cassette.prehook(::ExtraeCtx, ::typeof(Distributed.handle_msg), ::Distributed.JoinCompleteMsg, args...) = emit(DistributedHandleJoinComplete)
+
+Cassette.posthook(::ExtraeCtx, _, ::typeof(Distributed.handle_msg), args...) = emit(DistributedHandleEnd)
+
+
 # resource identification
 function dist_taskid()::Cuint
     id = Distributed.myid() - 1
@@ -74,6 +115,12 @@ export dist_numtasks
 function addprocs_extrae(np::Integer; restrict=true, kwargs...)
     manager = Extrae.ExtraeLocalManager(np, restrict)
     #check_addprocs_args(manager, kwargs)
-    addprocs(manager; kwargs...)
+    new_workers = addprocs(manager; kwargs...)
+
+    Extrae.init()
+    for pid in new_workers
+        @fetchfrom pid Extrae.init()
+    end
+    return new_workers
 end
 export addprocs_extrae
