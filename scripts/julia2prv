@@ -1,0 +1,11 @@
+#!/bin/bash
+
+TRACE=$(mktemp -p .)
+
+trace_name=$1
+shift
+
+cat ${@} > ${TRACE} 
+mpi2prv -v -f ${TRACE} -o ${trace_name}
+rm $TRACE
+
