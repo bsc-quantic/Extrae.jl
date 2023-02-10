@@ -38,9 +38,7 @@ function init()
   #register(DistributedUsefulWorkEvent, "Workers workload execution")
 
   ## Setup traceid for not intereference
-  name = "JULIATRACE" * string(Distributed.myid())
-  var = "EXTRAE_PROGRAM_NAME"
-  @ccall setenv(var::Cstring, name::Cstring)::Cint
+  ENV["EXTRAE_PROGRAM_NAME"] = "JULIATRACE$(Distributed.myid())"
 
   FFI.Extrae_init()
   Libc.flush_cstdio()
