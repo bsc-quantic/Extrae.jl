@@ -109,17 +109,8 @@ Cassette.posthook(::ExtraeCtx, _, ::typeof(Distributed.handle_msg), args...) = e
 
 
 # resource identification
-function dist_taskid()::Cuint
-    id = Distributed.myid() - 1
-    return id
-end
-export dist_taskid
-
-function dist_numtasks()::Cuint
-    nworkers = Distributed.nworkers() + 1
-    return nworkers
-end
-export dist_numtasks
+dist_taskid()::Cuint = Distributed.myid() - 1
+dist_numtasks()::Cuint = Distributed.nworkers() + 1
 
 # cluster manager addprocs 
 function addprocs_extrae(np::Integer; restrict=true, kwargs...)
