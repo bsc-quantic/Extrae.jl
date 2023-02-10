@@ -20,7 +20,13 @@ function Distributed.launch(manager::ExtraeLocalManager, params::Dict, launched:
     cookie = cluster_cookie()
 
     #hookline = """using Distributed; f = Base.open("hooked.txt", "w"); write(f, $(repr(string(cookie))))"""
-    hookline = """using Distributed; using Extrae; using Cassette; Cassette.overdub(Extrae.ExtraeCtx(), start_worker, $(repr(string(cookie))))"""
+    hookline = """
+        using Distributed
+        using Extrae
+        using Cassette
+        
+        Cassette.overdub(Extrae.ExtraeCtx(), start_worker, $(repr(string(cookie))))
+        """
 
 
     # Bug: Instead of using julia_cmd(exename), I directly use exename because idk howto access Base.julia_cmd
