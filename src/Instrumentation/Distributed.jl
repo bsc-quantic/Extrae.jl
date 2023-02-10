@@ -43,6 +43,16 @@ description(::typeof(DistributedRemoteCallWait)) = "remotecall_wait"
 description(::typeof(DistributedProcessMessages)) = "process_messages"
 description(::typeof(DistributedInterrupt)) = "interrupt"
 
+description(::typeof(DistributedHandleCall)) = "CallMsg{:call}"
+description(::typeof(DistributedHandleCallFetch)) = "CallMsg{:call_fetch}"
+description(::typeof(DistributedHandleCallWait)) = "CallWaitMsg"
+description(::typeof(DistributedHandleRemoteDo)) = "RemoteDoMsg"
+description(::typeof(DistributedHandleResult)) = "ResultMsg"
+description(::typeof(DistributedHandleIdentifySocket)) = "IdentifySocketMsg"
+description(::typeof(DistributedHandleIdentifySocketAck)) = "IdentifySocketAckMsg"
+description(::typeof(DistributedHandleJoinPGRP)) = "JoinPGRPMsg"
+description(::typeof(DistributedHandleJoinComplete)) = "JoinCompletesg"
+
 description(::typeof(DistributedUsefulWork)) = "Useful"
 description(::typeof(DistributedNotUsefulWork)) = "Not Useful"
 
