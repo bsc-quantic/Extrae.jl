@@ -6,6 +6,8 @@ addprocs_extrae(1)
 @everywhere using Cassette
 @everywhere using Extrae
 
+# ENV["JULIA_DEBUG"] = Extrae
+# @everywhere ENV["JULIA_DEBUG"] = Extrae
 
 function random_sleep()
     println("Worker started: ", myid())

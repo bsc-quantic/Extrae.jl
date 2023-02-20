@@ -43,7 +43,7 @@ function init()
   FFI.Extrae_init()
   Libc.flush_cstdio()
 
-  println("Extrae initialized in worker $(myid())")
+  @debug "Extrae initialized in worker $(myid())"
 
 end
 export init
@@ -100,7 +100,7 @@ description(::E) where {E<:Event} = description(E)
 Add a single timestampted event into the tracefile.
 """
 function emit(::Event{T,V}; counters::Bool=false) where {T,V}
-    println("Event emit: $(T): $(V)")
+    @debug "Event emit: $(T): $(V)"
     if counters
         FFI.Extrae_eventandcounters(FFI.Type(T), FFI.Value(V))
     else
