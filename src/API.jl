@@ -27,7 +27,26 @@ This routine is called automatically in different circumstances, which include:
 
 No major problems should occur if the library is initialized twice, only a warning appears in the terminal output noticing the intent of double initialization.
 """
-init() = FFI.Extrae_init()
+function init()
+
+  ## TODO: This setup should depend on isntrumentation options.
+  ## For example, if isntrumenting Distributed, here we setup the
+  ## Distributed functions to identify resources
+  FFI.Extrae_set_numtasks_function(dist_numtasks)
+  FFI.Extrae_set_taskid_function(dist_taskid)
+  #register(DistributedEvent, "Distributed runtime call")
+  #register(DistributedUsefulWorkEvent, "Workers workload execution")
+
+  ## Setup traceid for not intereference
+  ENV["EXTRAE_PROGRAM_NAME"] = "JULIATRACE$(Distributed.myid())"
+
+  FFI.Extrae_init()
+  Libc.flush_cstdio()
+
+  @debug "Extrae initialized in worker $(myid())"
+
+end
+export init
 
 
 """
@@ -42,7 +61,11 @@ isinit() = FFI.Extrae_is_initialized()
 
 Finalize the tracing library and dumps the intermediate tracing buffers onto disk.
 """
-finish() = FFI.Extrae_fini()
+function finish()
+  FFI.Extrae_fini()
+  Libc.flush_cstdio()
+end
+export finish
 
 """
     flush()
@@ -77,6 +100,7 @@ description(::E) where {E<:Event} = description(E)
 Add a single timestampted event into the tracefile.
 """
 function emit(::Event{T,V}; counters::Bool=false) where {T,V}
+    @debug "Event emit: $(T): $(V)"
     if counters
         FFI.Extrae_eventandcounters(FFI.Type(T), FFI.Value(V))
     else
