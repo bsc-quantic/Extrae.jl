@@ -10,7 +10,7 @@ struct ExtraeLocalManager <: ClusterManager
     restrict::Bool  # Restrict binding to 127.0.0.1 only
 end
 
-Base.show(io::IO, manager::ExtraeLocalManager) = print(io, "ExtraeLocalManager()")
+Base.show(io::IO, manager::ExtraeLocalManager) = print(io, "ExtraeLocalManager(#procs=$(manager.np), restrict=$(manager.restrict))")
 
 function Distributed.launch(manager::ExtraeLocalManager, params::Dict, launched::Array, c::Condition)
     dir = params[:dir]
