@@ -1,11 +1,14 @@
 using Distributed
 
-
 include("ExtraeLocalManager.jl")
 
-struct DistributedEvent{ValueCode} <: Event{400002,ValueCode} end
-struct DistributedUsefulWorkEvent{ValueCode} <: Event{400001,ValueCode} end
-struct DistributedMessageHandlingEvent{ValueCode} <: Event{400004,ValueCode} end
+const DistributedEvent{ValueCode} = Event{400002,ValueCode}
+const DistributedUsefulWorkEvent{ValueCode} = Event{400001,ValueCode}
+const DistributedMessageHandlingEvent{ValueCode} = Event{400004,ValueCode}
+
+description(::Type{DistributedEvent}) = "Distributed - Events"
+description(::Type{DistributedUsefulWorkEvent}) = "Distributed - Useful Work"
+description(::Type{DistributedMessageHandlingEvent}) = "Distributed - Message Handling"
 
 const DistributedEnd = DistributedEvent{0}()
 const DistributedAddProcs = DistributedEvent{1}()

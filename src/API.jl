@@ -88,7 +88,7 @@ Emit the value of the active hardware counters set.
 """
 emit() = FFI.Extrae_counters()
 
-abstract type Event{TypeCode,ValueCode} end
+struct Event{TypeCode,ValueCode} end
 typecode(::Event{T}) where {T} = T
 valuecode(::Event{T,V}) where {T,V} = V
 description(::Type{Event{T,V}}) where {T,V} = String(V)
@@ -111,17 +111,22 @@ end
 emit(events::Vector{Event}; counters::Bool=false) = foreach(e -> event(e; counters=counters), events)
 
 """
+    register(event)
     register(event, description)
     register(events, description)
 
 Document to the Paraver Configuration File human readable information regarding type type and its values values.
 """
-register(::Type{<:Event{T}}, desc::String) where {T} = FFI.Extrae_define_event_type(T, Base.cconvert(Cstring(desc)), 0, Nothing, Nothing)
+register(::E) where {E<:Event} = register(E)
+register(::Type{E}) where {E<:Event} = register(E, description(E))
+register(events::Vector{<:Event{T,V} where {V}}) where {T} = register(events, description(Event{T}))
+register(::E, desc::String) where {E<:Event} = register(E, desc)
+register(::Type{<:Event{T}}, desc::String) where {T} = FFI.Extrae_define_event_type(T, Base.cconvert(Cstring, desc), 0, Nothing, Nothing)
 function register(events::Vector{<:Event{T,V} where {V}}, desc::String) where {T}
     nvalues = length(events)
     values = valuecode.(events)
-    descs = description.(events)
-    FFI.Extrae_define_event_type(T, Base.cconvert(desc), nvalues, Ref(values), Ref(descs))
+    descs = Base.cconvert.((Cstring,), description.(events))
+    FFI.Extrae_define_event_type(T, Base.cconvert(Cstring, desc), nvalues, Ref(values), Ref(descs))
 end
 
 """

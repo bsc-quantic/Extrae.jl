@@ -3,6 +3,8 @@ using Base: do_threadcall
 
 struct ThreadsEvent{ValueCode} <: Event{400003,ValueCode} end
 
+description(::typeof(ThreadsEvent)) = "Threads"
+
 const ThreadsEnd = ThreadsEvent{0}()
 const ThreadsThreadCall = ThreadsEvent{1}() # NOTE tracing `do_threadcall` which is called by @threadcall
 const ThreadsThreads = ThreadsEvent{2}() # NOTE tracing `threading_run` which is called by `_threadsfor` (used by `@threads`)
