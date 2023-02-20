@@ -65,7 +65,7 @@ Emit the value of the active hardware counters set.
 """
 emit() = FFI.Extrae_counters()
 
-abstract type Event{TypeCode,ValueCode} end
+struct Event{TypeCode,ValueCode} end
 typecode(::Event{T}) where {T} = T
 valuecode(::Event{T,V}) where {T,V} = V
 description(::Type{Event{T,V}}) where {T,V} = String(V)

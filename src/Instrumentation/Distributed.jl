@@ -1,6 +1,8 @@
 using Distributed
 
-struct DistributedEvent{ValueCode} <: Event{400002,ValueCode} end
+const DistributedEvent{ValueCode} = Event{400002,ValueCode}
+
+description(::Type{DistributedEvent}) = "Distributed"
 
 const DistributedEnd = DistributedEvent{0}()
 const DistributedAddProcs = DistributedEvent{1}()
