@@ -1,9 +1,9 @@
 using Base.Threads: threading_run
 using Base: do_threadcall
 
-struct ThreadsEvent{ValueCode} <: Event{400003,ValueCode} end
+const ThreadsEvent{ValueCode} = Event{400003,ValueCode}
 
-description(::typeof(ThreadsEvent)) = "Threads"
+description(::Type{ThreadsEvent}) = "Threads"
 
 const ThreadsEnd = ThreadsEvent{0}()
 const ThreadsThreadCall = ThreadsEvent{1}() # NOTE tracing `do_threadcall` which is called by @threadcall
