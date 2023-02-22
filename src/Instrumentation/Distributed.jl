@@ -6,9 +6,9 @@ const DistributedEvent{ValueCode} = Event{400002,ValueCode}
 const DistributedUsefulWorkEvent{ValueCode} = Event{400001,ValueCode}
 const DistributedMessageHandlingEvent{ValueCode} = Event{400004,ValueCode}
 
-description(::Type{DistributedEvent}) = "Distributed - Events"
-description(::Type{DistributedUsefulWorkEvent}) = "Distributed - Useful Work"
-description(::Type{DistributedMessageHandlingEvent}) = "Distributed - Message Handling"
+description(::Type{DistributedEvent}) = "Distributed runtime calls"
+description(::Type{DistributedUsefulWorkEvent}) = "Distributed workload execution"
+description(::Type{DistributedMessageHandlingEvent}) = "Distributed message handling functions"
 
 const DistributedEnd = DistributedEvent{0}()
 const DistributedAddProcs = DistributedEvent{1}()

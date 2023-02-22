@@ -34,8 +34,18 @@ function init()
   ## Distributed functions to identify resources
   FFI.Extrae_set_numtasks_function(dist_numtasks)
   FFI.Extrae_set_taskid_function(dist_taskid)
-  #register(DistributedEvent, "Distributed runtime call")
-  #register(DistributedUsefulWorkEvent, "Workers workload execution")
+  register([DistributedUsefulWork, DistributedNotUsefulWork])
+  register([DistributedEnd,DistributedAddProcs,DistributedRmProcs,
+            DistributedInitWorker,DistributedStartWorker,DistributedRemoteCall,
+            DistributedRemoteCallFetch,DistributedRemoteCallWait,
+            DistributedProcessMessages,DistributedInterrupt,
+  ])
+  register([DistributedHandleEnd, DistributedHandleCall, DistributedHandleCallFetch, 
+            DistributedHandleCallWait, DistributedHandleRemoteDo, 
+            DistributedHandleResult, DistributedHandleIdentifySocket, 
+            DistributedHandleIdentifySocketAck, DistributedHandleJoinPGRP, 
+            DistributedHandleJoinComplete, 
+  ])
 
   ## Setup traceid for not intereference
   ENV["EXTRAE_PROGRAM_NAME"] = "JULIATRACE$(Distributed.myid())"
