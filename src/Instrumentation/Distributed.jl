@@ -46,6 +46,7 @@ description(::typeof(DistributedRemoteCallWait)) = "remotecall_wait"
 description(::typeof(DistributedProcessMessages)) = "process_messages"
 description(::typeof(DistributedInterrupt)) = "interrupt"
 
+description(::typeof(DistributedHandleEnd)) = "End"
 description(::typeof(DistributedHandleCall)) = "CallMsg{:call}"
 description(::typeof(DistributedHandleCallFetch)) = "CallMsg{:call_fetch}"
 description(::typeof(DistributedHandleCallWait)) = "CallWaitMsg"
