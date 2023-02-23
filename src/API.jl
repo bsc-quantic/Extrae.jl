@@ -136,7 +136,7 @@ function register(events::Vector{<:Event{T,V} where {V}}, desc::String) where {T
     nvalues = length(events)
     values = valuecode.(events)
     descs = Base.cconvert.((Cstring,), description.(events))
-    FFI.Extrae_define_event_type(T, Base.cconvert(Cstring, desc), nvalues, Ref(values), Ref(descs))
+    FFI.Extrae_define_event_type(T, Base.cconvert(Cstring, desc), nvalues, values, Ref(descs))
 end
 
 """
