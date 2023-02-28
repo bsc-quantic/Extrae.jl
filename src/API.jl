@@ -34,6 +34,13 @@ function init()
   ## Distributed functions to identify resources
   FFI.Extrae_set_numtasks_function(dist_numtasks)
   FFI.Extrae_set_taskid_function(dist_taskid)
+
+  ## Setup traceid for not intereference
+  ENV["EXTRAE_PROGRAM_NAME"] = "JULIATRACE$(Distributed.myid())"
+
+  FFI.Extrae_init()
+  Libc.flush_cstdio()
+  
   register([DistributedUsefulWork, DistributedNotUsefulWork])
   register([DistributedEnd,DistributedAddProcs,DistributedRmProcs,
             DistributedInitWorker,DistributedStartWorker,DistributedRemoteCall,
@@ -46,12 +53,6 @@ function init()
             DistributedHandleIdentifySocketAck, DistributedHandleJoinPGRP, 
             DistributedHandleJoinComplete, 
   ])
-
-  ## Setup traceid for not intereference
-  ENV["EXTRAE_PROGRAM_NAME"] = "JULIATRACE$(Distributed.myid())"
-
-  FFI.Extrae_init()
-  Libc.flush_cstdio()
 
   @debug "Extrae initialized in worker $(myid())"
 
@@ -136,6 +137,7 @@ function register(events::Vector{<:Event{T,V} where {V}}, desc::String) where {T
     nvalues = length(events)
     values = valuecode.(events)
     descs = Base.cconvert.((Cstring,), description.(events))
+    @debug "Registering event [$(T)] $(desc) with values [$(values)] $(descs)"
     FFI.Extrae_define_event_type(T, Base.cconvert(Cstring, desc), nvalues, values, descs)
 end
 
