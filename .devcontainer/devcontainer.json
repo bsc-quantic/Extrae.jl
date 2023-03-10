@@ -13,14 +13,5 @@
 			]
 		}
 	},
-	"postStartCommand": [
-		"git config --global --add safe.directory ${containerWorkspaceFolder}",
-		"julia --project=${containerWorkspaceFolder} -e \"using Pkg; Pkg.instantiate()\""
-	]
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-	// Configure tool-specific properties.
-	// "customizations": {},
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+	"postCreateCommand": "bash .devcontainer/postCreateCommand.sh ${containerWorkspaceFolder}"
 }
