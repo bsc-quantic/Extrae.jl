@@ -70,7 +70,6 @@ function init()
     @debug "Extrae initialized in worker $(myid())"
 
 end
-export init
 
 
 """
@@ -89,7 +88,6 @@ function finish()
     FFI.Extrae_fini()
     Libc.flush_cstdio()
 end
-export finish
 
 """
     flush()
