@@ -29,32 +29,45 @@ No major problems should occur if the library is initialized twice, only a warni
 """
 function init()
 
-  ## TODO: This setup should depend on isntrumentation options.
-  ## For example, if isntrumenting Distributed, here we setup the
-  ## Distributed functions to identify resources
-  FFI.Extrae_set_numtasks_function(dist_numtasks)
-  FFI.Extrae_set_taskid_function(dist_taskid)
+    ## TODO: This setup should depend on isntrumentation options.
+    ## For example, if isntrumenting Distributed, here we setup the
+    ## Distributed functions to identify resources
+    FFI.Extrae_set_numtasks_function(dist_numtasks)
+    FFI.Extrae_set_taskid_function(dist_taskid)
 
-  ## Setup traceid for not intereference
-  ENV["EXTRAE_PROGRAM_NAME"] = "JULIATRACE$(Distributed.myid())"
+    ## Setup traceid for not intereference
+    ENV["EXTRAE_PROGRAM_NAME"] = "JULIATRACE$(Distributed.myid())"
 
-  FFI.Extrae_init()
-  Libc.flush_cstdio()
-  
-  register([DistributedUsefulWork, DistributedNotUsefulWork])
-  register([DistributedEnd,DistributedAddProcs,DistributedRmProcs,
-            DistributedInitWorker,DistributedStartWorker,DistributedRemoteCall,
-            DistributedRemoteCallFetch,DistributedRemoteCallWait,
-            DistributedProcessMessages,DistributedInterrupt,
-  ])
-  register([DistributedHandleEnd, DistributedHandleCall, DistributedHandleCallFetch, 
-            DistributedHandleCallWait, DistributedHandleRemoteDo, 
-            DistributedHandleResult, DistributedHandleIdentifySocket, 
-            DistributedHandleIdentifySocketAck, DistributedHandleJoinPGRP, 
-            DistributedHandleJoinComplete, 
-  ])
+    FFI.Extrae_init()
+    Libc.flush_cstdio()
 
-  @debug "Extrae initialized in worker $(myid())"
+    register([DistributedUsefulWork, DistributedNotUsefulWork])
+    register([
+        DistributedEnd,
+        DistributedAddProcs,
+        DistributedRmProcs,
+        DistributedInitWorker,
+        DistributedStartWorker,
+        DistributedRemoteCall,
+        DistributedRemoteCallFetch,
+        DistributedRemoteCallWait,
+        DistributedProcessMessages,
+        DistributedInterrupt
+    ])
+    register([
+        DistributedHandleEnd,
+        DistributedHandleCall,
+        DistributedHandleCallFetch,
+        DistributedHandleCallWait,
+        DistributedHandleRemoteDo,
+        DistributedHandleResult,
+        DistributedHandleIdentifySocket,
+        DistributedHandleIdentifySocketAck,
+        DistributedHandleJoinPGRP,
+        DistributedHandleJoinComplete,
+    ])
+
+    @debug "Extrae initialized in worker $(myid())"
 
 end
 export init
@@ -73,8 +86,8 @@ isinit() = FFI.Extrae_is_initialized()
 Finalize the tracing library and dumps the intermediate tracing buffers onto disk.
 """
 function finish()
-  FFI.Extrae_fini()
-  Libc.flush_cstdio()
+    FFI.Extrae_fini()
+    Libc.flush_cstdio()
 end
 export finish
 
