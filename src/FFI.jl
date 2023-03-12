@@ -131,7 +131,7 @@ MPItrace_neventandcounters(count, types, values) = @ccall lib.MPItrace_neventand
 OMPtrace_neventandcounters(count, types, values) = @ccall lib.OMPtrace_neventandcounters(count::UInt32, types::Ptr{Type}, values::Ptr{Value})::Cvoid
 SEQtrace_neventandcounters(count, types, values) = @ccall lib.SEQtrace_neventandcounters(count::UInt32, types::Ptr{Type}, values::Ptr{Value})::Cvoid
 
-Extrae_define_event_type(type, type_description, nvalues, values, values_description) = @ccall lib.Extrae_define_event_type(type::Ref{Type}, type_description::Cstring, nvalues::Ref{UInt32}, values::Ref{Vector{Value}}, values_description::Ptr{Ptr{UInt8}})::Cvoid
+Extrae_define_event_type(type, type_description, nvalues, values, values_description) = @ccall lib.Extrae_define_event_type(type::Ref{Type}, type_description::Cstring, nvalues::Ref{UInt32}, values::Vector{Value}, values_description::Ptr{Ptr{UInt8}})::Cvoid
 
 Extrae_set_tracing_tasks(from, to) = @ccall lib.Extrae_set_tracing_tasks(from::UInt32, to::UInt32)::Cvoid
 OMPtrace_set_tracing_tasks(from, to) = @ccall lib.OMPtrace_set_tracing_tasks(from::UInt32, to::UInt32)::Cvoid
