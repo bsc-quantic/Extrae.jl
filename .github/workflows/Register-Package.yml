@@ -1,0 +1,20 @@
+name: Register Package
+on:
+  push:
+    branches:
+      - "master"
+    paths:
+      - "Project.toml"
+  workflow_dispatch:
+jobs:
+  register:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: julia-actions/setup-julia@v1
+      - uses: bsc-quantic/julia-register@v0.1
+        with:
+          registry: https://github.com/bsc-quantic/Registry
+          push: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
