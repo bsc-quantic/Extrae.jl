@@ -35,7 +35,7 @@ jobs:
           # - aarch64
           # - ppc64le
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: julia-actions/setup-julia@v1
         with:
           version: ${{ matrix.version }}
@@ -54,6 +54,6 @@ jobs:
         env:
           ENABLE_AQUA_TESTS: 1
       - uses: julia-actions/julia-processcoverage@v1
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
         with:
           files: lcov.info
