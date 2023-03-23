@@ -15,6 +15,5 @@ jobs:
       - uses: bsc-quantic/julia-register@v0.1.2
         with:
           registry: https://github.com/bsc-quantic/Registry
-          push: true
         env:
           GITHUB_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
