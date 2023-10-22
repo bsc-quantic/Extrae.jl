@@ -26,14 +26,12 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1.8'
+          - '1.9'
           - 'nightly'
         os:
           - ubuntu-latest
         arch:
           - x64
-          # - aarch64
-          # - ppc64le
     steps:
       - uses: actions/checkout@v3
       - uses: julia-actions/setup-julia@v1

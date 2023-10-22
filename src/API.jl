@@ -28,47 +28,16 @@ This routine is called automatically in different circumstances, which include:
 No major problems should occur if the library is initialized twice, only a warning appears in the terminal output noticing the intent of double initialization.
 """
 function init()
-
     ## TODO: This setup should depend on isntrumentation options.
     ## For example, if isntrumenting Distributed, here we setup the
     ## Distributed functions to identify resources
-    FFI.Extrae_set_numtasks_function(dist_numtasks)
-    FFI.Extrae_set_taskid_function(dist_taskid)
+    # FFI.Extrae_set_numtasks_function(dist_numtasks)
+    # FFI.Extrae_set_taskid_function(dist_taskid)
 
     ## Setup traceid for not intereference
     ENV["EXTRAE_PROGRAM_NAME"] = "JULIATRACE$(Distributed.myid())"
 
     FFI.Extrae_init()
-    Libc.flush_cstdio()
-
-    register([DistributedUsefulWork, DistributedNotUsefulWork])
-    register([
-        DistributedEnd,
-        DistributedAddProcs,
-        DistributedRmProcs,
-        DistributedInitWorker,
-        DistributedStartWorker,
-        DistributedRemoteCall,
-        DistributedRemoteCallFetch,
-        DistributedRemoteCallWait,
-        DistributedProcessMessages,
-        DistributedInterrupt
-    ])
-    register([
-        DistributedHandleEnd,
-        DistributedHandleCall,
-        DistributedHandleCallFetch,
-        DistributedHandleCallWait,
-        DistributedHandleRemoteDo,
-        DistributedHandleResult,
-        DistributedHandleIdentifySocket,
-        DistributedHandleIdentifySocketAck,
-        DistributedHandleJoinPGRP,
-        DistributedHandleJoinComplete,
-    ])
-
-    @debug "Extrae initialized in worker $(myid())"
-
 end
 
 
@@ -122,7 +91,6 @@ description(::E) where {E<:Event} = description(E)
 Add a single timestampted event into the tracefile.
 """
 function emit(::Event{T,V}; counters::Bool=false) where {T,V}
-    @debug "Event emit: $(T): $(V)"
     if counters
         FFI.Extrae_eventandcounters(FFI.Type(T), FFI.Value(V))
     else
@@ -131,26 +99,6 @@ function emit(::Event{T,V}; counters::Bool=false) where {T,V}
 end
 
 emit(events::Vector{Event}; counters::Bool=false) = foreach(e -> event(e; counters=counters), events)
-
-"""
-    register(event)
-    register(event, description)
-    register(events, description)
-
-Document to the Paraver Configuration File human readable information regarding type type and its values values.
-"""
-register(::E) where {E<:Event} = register(E)
-register(::Type{E}) where {E<:Event} = register(E, description(E))
-register(events::Vector{<:Event{T,V} where {V}}) where {T} = register(events, description(Event{T}))
-register(::E, desc::String) where {E<:Event} = register(E, desc)
-register(::Type{<:Event{T}}, desc::String) where {T} = FFI.Extrae_define_event_type(T, Base.cconvert(Cstring, desc), 0, Nothing, Nothing)
-function register(events::Vector{<:Event{T,V} where {V}}, desc::String) where {T}
-    nvalues = length(events)
-    values = valuecode.(events)
-    descs = Base.cconvert.((Cstring,), description.(events))
-    @debug "Registering event [$(T)] $(desc) with values [$(values)] $(descs)"
-    FFI.Extrae_define_event_type(T, Base.cconvert(Cstring, desc), nvalues, values, descs)
-end
 
 """
     previous_hwc_set()

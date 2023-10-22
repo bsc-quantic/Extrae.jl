@@ -1,16 +1,11 @@
 name = "Extrae"
 uuid = "8a0c07fa-ade5-4b2a-b81a-b192b2bedf88"
-authors = ["Sergio Sánchez Ramírez <sergio.sanchez.ramirez@bsc.es> and contributors"]
+authors = ["Sergio Sánchez Ramírez <sergio.sanchez.ramirez@bsc.es>"]
 version = "0.1.0"
 
 [deps]
 Extrae_jll = "2b2c4be0-e38c-5918-b8b4-9a308845a1e9"
-
-[weakdeps]
-Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
-
-[extensions]
-ExtraeDistributedExt = "Distributed"
+Tracepoints = "7b3c9f6b-6d9c-4ea7-b055-3d1c3a6586ed"
 
 [compat]
 Extrae_jll = "4.0.3"
