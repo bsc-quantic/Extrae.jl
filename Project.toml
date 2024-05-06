@@ -5,7 +5,6 @@ version = "0.1.0"
 
 [deps]
 Extrae_jll = "2b2c4be0-e38c-5918-b8b4-9a308845a1e9"
-Tracepoints = "7b3c9f6b-6d9c-4ea7-b055-3d1c3a6586ed"
 
 [compat]
 Extrae_jll = "4.0.3"
