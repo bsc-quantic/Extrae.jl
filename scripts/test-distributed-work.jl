@@ -1,10 +1,10 @@
 using Distributed
-using Extrae
-
-ENV["JULIA_DEBUG"] = Extrae
-@everywhere ENV["JULIA_DEBUG"] = Extrae
 
 addprocs(1)
+
+@everywhere using Extrae
+
+@everywhere ENV["JULIA_DEBUG"] = Extrae
 
 function random_sleep()
     println("Worker started: ", myid())
@@ -18,7 +18,7 @@ end
 end
 
 function test_distributed_work()
-
+    @everywhere Extrae.init()
     A = rand(1000, 1000)
     a1 = @spawnat :any matrix_multiply(A)
     a2 = @spawnat :any matrix_multiply(A)
