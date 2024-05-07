@@ -1,5 +1,7 @@
 module Extrae
 
+using Extrae_jll
+
 include("FFI.jl")
 include("API.jl")
 export Event, typecode, valuecode, description
