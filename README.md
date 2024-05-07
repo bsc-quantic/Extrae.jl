@@ -4,11 +4,6 @@
 
 Julia bindings to `extrae` Basic API.
 
-## Parallel programming models currently instrumented
-
-- Threads
-- Distributed
-
 ## Example scripts
 
 In `scripts` directory you can find the `test-distributed-work.jl` script that traces a very basic execution of a Distributed program.  This script squares a random 1000x1000 matrix two times in a worker, and then fetches the values.
