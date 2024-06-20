@@ -12,7 +12,7 @@ function version()
 
     FFI.Extrae_get_version(major, minor, rev)
 
-    VersionNumber(major[], minor[], rev[])
+    return VersionNumber(major[], minor[], rev[])
 end
 
 """
@@ -29,7 +29,6 @@ No major problems should occur if the library is initialized twice, only a warni
 """
 init() = FFI.Extrae_init()
 
-
 """
     isinit()
 
@@ -44,7 +43,7 @@ Finalize the tracing library and dumps the intermediate tracing buffers onto dis
 """
 function finish()
     FFI.Extrae_fini()
-    Libc.flush_cstdio()
+    return Libc.flush_cstdio()
 end
 
 """
@@ -87,7 +86,9 @@ function emit(::Event{T,V}; counters::Bool=false) where {T,V}
     end
 end
 
-emit(events::Vector{Event}; counters::Bool=false) = foreach(e -> event(e; counters=counters), events)
+function emit(events::Vector{Event}; counters::Bool=false)
+    return foreach(e -> event(e; counters=counters), events)
+end
 
 """
     previous_hwc_set()
@@ -108,7 +109,8 @@ next_hwc_set() = FFI.Extrae_next_hwc_set()
 
 Select the range of tasks (not threads!) to store information from in the tracefile.
 """
-set_tracing_tasks(interval::UnitRange{UInt32}) = FFI.Extrae_set_tracing_tasks(interval.start::UInt32, interval.stop::UInt32)
+set_tracing_tasks(interval::UnitRange{UInt32}) =
+    FFI.Extrae_set_tracing_tasks(interval.start::UInt32, interval.stop::UInt32)
 
 """
     setoption(options)
