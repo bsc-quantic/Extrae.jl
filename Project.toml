@@ -6,6 +6,12 @@ version = "0.1.0"
 [deps]
 Extrae_jll = "2b2c4be0-e38c-5918-b8b4-9a308845a1e9"
 
+[weakdeps]
+Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
+
+[extension]
+ExtraeDistributedExt = "Distributed"
+
 [compat]
 Extrae_jll = "4.1.2"
 julia = "1.9"
