@@ -1,3 +1,5 @@
+const Event = Tuple{FFI.Type,FFI.Value}
+
 """
     version()
 
@@ -67,27 +69,35 @@ Emit the value of the active hardware counters set.
 """
 emit() = FFI.Extrae_counters()
 
-struct Event{TypeCode,ValueCode} end
-typecode(::Event{T}) where {T} = T
-valuecode(::Event{T,V}) where {T,V} = V
-description(::Type{Event{T,V}}) where {T,V} = String(V)
-description(::E) where {E<:Event} = description(E)
-
 """
     emit(event)
 
 Add a single timestampted event into the tracefile.
 """
-function emit(::Event{T,V}; counters::Bool=false) where {T,V}
+function emit(typecode::FFI.Type, valuecode::FFI.Value; counters::Bool=false)
     if counters
-        FFI.Extrae_eventandcounters(FFI.Type(T), FFI.Value(V))
+        FFI.Extrae_eventandcounters(typecode, valuecode)
     else
-        FFI.Extrae_event(FFI.Type(T), FFI.Value(V))
+        FFI.Extrae_event(typecode, valuecode)
+    end
+end
+
+function emit(
+    typecodes::Vector{FFI.Type}, valuecodes::Vector{FFI.Value}; counters::Bool=false
+)
+    @assert length(typecodes) == length(valuecodes)
+    N = length(typecodes)
+    if counters
+        FFI.Extrae_neventandcounters(N, typecodes, valuecodes)
+    else
+        FFI.Extrae_nevent(N, typecodes, valuecodes)
     end
 end
 
 function emit(events::Vector{Event}; counters::Bool=false)
-    return foreach(e -> event(e; counters=counters), events)
+    typecodes = map(x -> x[1], events)
+    valuecodes = map(x -> x[2], events)
+    return emit(typecodes, valuecodes; counters)
 end
 
 """
