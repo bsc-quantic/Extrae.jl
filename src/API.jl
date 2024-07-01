@@ -62,6 +62,11 @@ Turn on/off the instrumentation.
 """
 instrumentation(state::Bool) = state ? restart() : shutdown()
 
+function register(tcode, tdesc, vcodes, vdescs)
+    @assert length(vcodes) == length(vdescs)
+    return FFI.Extrae_define_event_type(tcode, tdesc, length(vcodes), vcodes, vdescs)
+end
+
 """
     emit()
 
