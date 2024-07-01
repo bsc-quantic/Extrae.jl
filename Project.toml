@@ -13,5 +13,5 @@ Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 ExtraeDistributedExt = "Distributed"
 
 [compat]
-Extrae_jll = "4.1.2"
+Extrae_jll = "4.2.0"
 julia = "1.9"
