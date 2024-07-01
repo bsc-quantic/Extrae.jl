@@ -23,6 +23,3 @@ scripts/julia2prv test-distributed.prv JULIATRACE*
 ```
 
 and you will obtain a Paraver trace named `test-distributed.prv`.
-
-## Visualization of Julia events
-You can find Paraver configurations to load the Julia events in the `cfgs` directory.  To use them, with Paraver open and the trace loaded, go to _File>Load Configuration..._ and choose one of the configurations depending on which events you want to visualize.
