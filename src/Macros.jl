@@ -1,7 +1,7 @@
 macro user_function(body)
     quote
-        Extrae.user_function(1)
-        $body
-        Extrae.user_function(0)
+        Extrae.user_function(true)
+        $(esc(body))
+        Extrae.user_function(false)
     end
 end

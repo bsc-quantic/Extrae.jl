@@ -186,4 +186,4 @@ In order to gather performance counters during the execution of these calls, the
 
 Note that you need to compile your application binary with debugging information (typically the `-g` compiler flag) in order to translate the captured addresses into valuable information such as function name, file name and line number.
 """
-user_function(enter) = FFI.Extrae_user_function(enter)
+user_function(enter) = FFI.Extrae_user_function(UInt32(enter))
