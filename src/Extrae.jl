@@ -6,7 +6,6 @@ include("FFI.jl")
 include("API.jl")
 include("Macros.jl")
 
-export Event, typecode, valuecode, description
 export version,
     init,
     isinit,
