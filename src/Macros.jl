@@ -1,7 +1,7 @@
-macro user_function(name, description)
+macro user_function(body)
     quote
-        Extrae.user_function($name, 1)
+        Extrae.user_function(1)
         $body
-        Extrae.user_function($name, 0)
+        Extrae.user_function(0)
     end
 end
