@@ -55,6 +55,8 @@ function use_system_binary(;
                 Extrae.use_system_binary(; library_names=[...])""")
     end
 
+    libextrae = join((libextrae, Libdl.dlext), '.')
+
     set_preferences!(Extrae, "libextrae" => libextrae; export_prefs, force)
 
     if libextrae != Extrae.libextrae
