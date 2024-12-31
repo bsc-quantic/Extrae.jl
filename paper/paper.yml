@@ -1,0 +1,20 @@
+title: "Extrae.jl: Julia bindings for the Extrae HPC Profiler"
+keywords:
+  - Julia
+  - HPC
+  - Profiling
+  - Tracing
+authors:
+  - name: Sergio Sanchez Ramirez
+    orcid: 0000-0003-4273-3328
+    affiliation: 1
+  - name: Mosè Giordano
+    orcid: 0000-0002-7218-2873
+    affiliation: 2
+affiliations:
+  - name: Barcelona Supercomputing Center (BSC)
+    index: 1
+  - name: University College London (UCL)
+    index: 2
+date: 9 November 2024
+bibliography: ref.bib
