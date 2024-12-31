@@ -8,10 +8,11 @@ keywords:
 authors:
   - name: Sergio Sanchez-Ramirez
     orcid: 0000-0003-4273-3328
-    affiliation: 1
+    affiliation: [1]
+    corresponding: true
   - name: Mosè Giordano
     orcid: 0000-0002-7218-2873
-    affiliation: 2
+    affiliation: [2]
 affiliations:
   - name: Barcelona Supercomputing Center (BSC)
     index: 1
