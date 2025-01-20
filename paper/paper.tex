@@ -1,6 +1,10 @@
 
 % JuliaCon proceedings template
 \documentclass{juliacon}
+
+% try fix symbol clash between '\subcaption' defined in juliacon.cls and 'subcaption' package
+\let\subcaption\undefined
+
 \usepackage{subcaption}
 \setcounter{page}{1}
 \usepackage{soul}
