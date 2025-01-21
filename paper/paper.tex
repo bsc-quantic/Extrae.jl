@@ -307,7 +307,9 @@ Furthermore, the variability is small enough compared to the amount of time to d
 \begin{figure}[h]
     \centering
     % \includesvg[width=\linewidth]{mpi_call_profile.svg}
+    \setlength{\svgwidth}{\linewidth}
     \input{mpi_call_profile_svg-tex.pdf_tex}
+    \let\svgwidth\undefined
     \caption{Fraction of time spent on each MPI routine. Dispersion comes from the time spent by different MPI ranks.}
     \label{fig:mpi-runtime-perc}
 \end{figure}
