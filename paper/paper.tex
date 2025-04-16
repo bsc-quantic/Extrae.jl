@@ -265,7 +265,7 @@ First, Paraver is able to compute some general metrics about the run. For exampl
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{Instantaneous_parallelism@trace-16-10ms.png}
+    \includegraphics[width=\linewidth]{Instantaneous_parallelism-trace-16-10ms.png}
     \caption{Instantaneous parallelism during the workload of the application measured as the number of MPI ranks not being idle at the given moment. Maximum value is 16 and minimum is 1.}
     \label{fig:parallelism}
 \end{figure}
@@ -275,13 +275,13 @@ For a more detailed and finer view of the execution, Paraver can plot a timeline
 \begin{figure}[h]
     \centering
     \begin{subfigure}{\linewidth}
-        \includegraphics[width=\linewidth]{MPI_call@trace-16-10ms.png}
+        \includegraphics[width=\linewidth]{MPI_call-trace-16-10ms.png}
         \caption{Original}
         \label{fig:timeline:orig}
     \end{subfigure}
     \\\vspace{1em}
     \begin{subfigure}{\linewidth}
-        \includegraphics[width=\linewidth]{MPI_call@trace-16-10ms-zoom.png}
+        \includegraphics[width=\linewidth]{MPI_call-trace-16-10ms-zoom.png}
         \caption{Zoom}
         \label{fig:timeline:zoom}
     \end{subfigure}
@@ -295,7 +295,7 @@ If we take the connectivity pattern between MPI ranks, shown in Figure~\ref{fig:
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=.8\linewidth]{2D_-_connectivity@trace-16-10ms.png}
+    \includegraphics[width=.8\linewidth]{2D_-_connectivity-trace-16-10ms.png}
     \caption{Connectivity pattern between MPI ranks measured as the number of messages sent from MPI rank \textit{x} to rank \textit{y}. Grey cells mean no communication while green cells mean represent a value of 2,016 messages sent.}
     \label{fig:connectivity}
 \end{figure}
@@ -320,7 +320,7 @@ In correlation with Figure~\ref{fig:timeline:zoom}, we can see that the bandwidt
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{Node_bandwidth_(MB_s)@trace-16-10ms.w_legend.png}
+    \includegraphics[width=\linewidth]{Node_bandwidth_MB_s-trace-16-10ms.w_legend.png}
     \caption{Node network bandwidth in the time region of Figure~\ref{fig:timeline:zoom} measured in MB/s. Only one node is shown because all MPI ranks run on the same node.}
     \label{fig:node-bw}
 \end{figure}
