@@ -9,6 +9,12 @@ It was presented at JuliaCon 2024 Eindhoven:
 
 [![Extrae.jl presentation](https://img.youtube.com/vi/hWOn8DBwYHA/maxresdefault.jpg)](https://youtu.be/hWOn8DBwYHA)
 
+## Installation
+
+If you want to perform a system-wide installation of Extrae, we recommend following this [guide](https://tools.bsc.es/doc/pdf/extrae-installation-guide.pdf). You can find more details in the [section _3. Configuration, build and installation_](https://tools.bsc.es/doc/html/extrae/configure-installation.html) of the documentation.
+
+If you want to use the BinaryBuilder-built artifact, you don't need to do anything more than adding Extrae.jl as a dependency to your project.
+
 ## Usage
 
 First, you need to set the Extrae configuration using environment variables or XML configuration. An example configuration file can be found in `scripts/extrae.xml`.
