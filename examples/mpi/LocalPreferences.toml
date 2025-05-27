@@ -1,0 +1,7 @@
+[MPIPreferences]
+__clear__ = ["libmpi", "abi", "mpiexec", "cclibs", "preloads_env_switch"]
+_format = "1.0"
+binary = "MPICH_jll"
+preloads = [
+    # HERE put the path to the Extrae library (Julia artifact or system-wide installation)
+]

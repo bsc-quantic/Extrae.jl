@@ -1,0 +1,8 @@
+[deps]
+Extrae = "8a0c07fa-ade5-4b2a-b81a-b192b2bedf88"
+MPIBenchmarks = "357d3ff1-0a0b-4dea-8b18-618e57d74eb1"
+MPIPreferences = "3da0fdf6-3ccc-4f1b-acd9-58baa6c99267"
+
+[sources]
+Extrae = {path = "../../"}
+MPIBenchmarks = {url = "https://github.com/JuliaParallel/MPIBenchmarks.jl", rev = "master"}

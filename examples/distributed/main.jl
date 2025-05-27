@@ -3,13 +3,12 @@ using Distributed
 addprocs(1)
 
 @everywhere using Extrae
-
 @everywhere ENV["JULIA_DEBUG"] = Extrae
 
 function random_sleep()
     println("Worker started: ", myid())
     sleep(rand((1, 2, 3, 4, 5)))
-    println("Worker woke up: ", myid())
+    return println("Worker woke up: ", myid())
 end
 
 @everywhere function matrix_multiply(A)
@@ -29,4 +28,4 @@ end
 
 test_distributed_work()
 
-println("END TEST")
+@everywhere Extrae.finish()
