@@ -5,6 +5,10 @@ Julia bindings to BSC's [`extrae`](https://tools.bsc.es/extrae) HPC profiler.
 It supports automatic instrumentation (through `LD_PRELOAD` mechanism, DynInst is on the way) of MPI, CUDA and pthreads, and PAPI/PMAPI hardware counters and callstack sampling.
 Generated traces can be viewed with [Paraver](https://tools.bsc.es/paraver).
 
+It was presented at JuliaCon 2024 Eindhoven:
+
+[![Extrae.jl presentation](https://img.youtube.com/vi/hWOn8DBwYHA/maxresdefault.jpg)](https://youtu.be/hWOn8DBwYHA)
+
 ## Usage
 
 First, you need to set the Extrae configuration using environment variables or XML configuration. An example configuration file can be found in `scripts/extrae.xml`.
