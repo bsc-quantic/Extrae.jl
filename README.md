@@ -17,7 +17,9 @@ If you want to use the BinaryBuilder-built artifact, you don't need to do anythi
 
 ## Usage
 
-First, you need to set the Extrae configuration using environment variables or XML configuration. An example configuration file can be found in `scripts/extrae.xml`.
+First, you need to set the Extrae configuration using environment variables or XML configuration. An example configuration file can be found in `scripts/extrae.xml` and in [section _9. An example of Extrae XML configuration file_](https://tools.bsc.es/doc/html/extrae/wholeXML.html) of the documentation.
+
+More information about the configuration options can be found in [section _4. "Extrae XML configuration file"_](https://tools.bsc.es/doc/html/extrae/xml.html) and in [section _10. "Environment variables"_](https://tools.bsc.es/doc/html/extrae/envvars.html) of the documentation.
 
 ### Event emision
 
