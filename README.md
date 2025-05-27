@@ -72,3 +72,19 @@ scripts/julia2prv test-distributed.prv JULIATRACE*
 ```
 
 and you will obtain a Paraver trace named `test-distributed.prv`.
+
+## Known issues
+
+### User functions do not appear in the profile when using Extrae's callstack sampling
+
+Check out [#23](https://github.com/bsc-quantic/Extrae.jl/issues/23). While Base and Core functions do appear in the profile, user functions do not.
+This is due to a miscommunication between Extrae and Julia to pass JITed function symbols, but these is not the case of sysimgs because Extrae can read function names from the file.
+
+A solution is on the works, but meanwhile it can be make to work by [compiling the user functions into a sysimg](https://docs.julialang.org/en/v1/devdocs/sysimg/).
+
+### Can't preload with BinaryBuilder binary
+
+Binaries built through BinaryBuilder are dynamically linked, but the system linker is unable to find the rest of dependencies because the rpaths are configured in another way.
+The current solution is to manually preload all the required dependencies manually. We are looking for a way to make this is easier.
+
+Alternatively, you can use system-installed binaries in your cluster (recommended option).
